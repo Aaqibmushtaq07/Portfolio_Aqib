@@ -4,19 +4,24 @@ import Link from "next/link";
 import courseData from "../data/music_courses.json";
 import { BackgroundGradient } from "./ui/background-gradient";
 
-interface Course {
+type Course = {
   id: number;
   title: string;
   slug: string;
   description: string;
-  price: number;
+  price?: number;  
   instructor: string;
   isFeatured: boolean;
-}
+  image: string;
+};
+
 const Background = () => {
   const featuredCourses = courseData.courses.filter(
-    (course: Course) => course.isFeatured
-  );
+    (course): course is Course & { price: number } => 
+        course.isFeatured && course.price !== undefined
+);
+
+  
   return (
     <div className="py-12 bg-gray-900">
       <div>
